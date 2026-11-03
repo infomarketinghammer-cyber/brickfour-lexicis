@@ -48,6 +48,26 @@
       "profession": "Senior Legal Administrator",
       "address": "Lexicis Legal Chambers, Pune",
       "firmName": "Lexicis"
+    },
+    {
+      "id": "dwarka",
+      "email": "dwarka@brickfour.com",
+      "name": "Dwarka",
+      "role": "attorney",
+      "phone": "",
+      "profession": "Legal Executive",
+      "address": "brickfour, Yerwada",
+      "firmName": "Brickfour"
+    },
+    {
+      "id": "vikas-khatik",
+      "email": "vikas.khatik@brickfour.com",
+      "name": "Vikas Khatik",
+      "role": "attorney",
+      "phone": "",
+      "profession": "Legal Executive",
+      "address": "brickfour, Yerwada",
+      "firmName": "Brickfour"
     }
   ],
   "userPasswords": {
@@ -55,7 +75,9 @@
     "attorney-1": "scrypt$fe17b6ea2123ba5843eadda52a6d3dd5$d1f7e3bb51aeca4bc6adb24efe30ba30e3368ebe76a9005467403941c506ab7a643cc5b97671a2a67f44d944044826f1a3e77616a1fef63b7339af8d1b4ee75b",
     "manisha-divakar": "scrypt$ee772351d05a9fc1955d8f3654fdab27$a4b960cbba7d86dca15bb49d7c1e01abe76d542f1c4cc0688dbf49dee40bedbff1f93fc2aa6b37a825f3e596ba6b0368acc8e8e546792cf515960d286f9a8040",
     "archana-katkar": "scrypt$af4e5b677f653256c29074c72e85b422$c5d3b9536deaf93e408dfb84c572cddd1860e542cad825c9766254dff20be7bcb38030632d1f99da0252bde0bc0fd9ad7740f62708b006a80b16021466c0af1d",
-    "admin": "scrypt$4d1e2467f35553cd94f1018dffd9a241$c2e68abbe0fe0c0c3a04b658438a842e38c775c2dfbb6602dc1a73cc6e3921d9c4342e6ea5aa58b7e50072a5e98e5acdcae36e08a04f8c80012beb1a5ea424c3"
+    "admin": "scrypt$4d1e2467f35553cd94f1018dffd9a241$c2e68abbe0fe0c0c3a04b658438a842e38c775c2dfbb6602dc1a73cc6e3921d9c4342e6ea5aa58b7e50072a5e98e5acdcae36e08a04f8c80012beb1a5ea424c3",
+    "dwarka": "scrypt$17ba207ca95bc1703c65c829e401e8e3$943d53d0ad9499d67f2a9e4f919c00279624d068abc89e222cfccb98ddf476ebc78b6e7341188a0e67544f0c162ae56016eaddc9c58036daed4808fa7bb63b03",
+    "vikas-khatik": "scrypt$16bad58112642d24715bcd3595b4696e$be497f416ae9f1ba9a850f07bcdac03407ffc09b9d3c3badbd86894d8b256e8d1469427023ae2a5324ad30ca30c6d58b171dce1082f6da726137464fcf9808ed"
   },
   "trackedCaseIds": {
     "client-1": [],
@@ -66,7 +88,9 @@
     ],
     "admin": [
       "MHPU050001602011"
-    ]
+    ],
+    "dwarka": [],
+    "vikas-khatik": []
   },
   "globalCases": [
     {

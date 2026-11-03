@@ -3,12 +3,10 @@ import { User } from '../types';
 import { clearSession, readSessionToken, readSessionUser, writeSessionUser } from '../lib/storage';
 import { SESSION_EXPIRED_EVENT } from '../api/client';
 
-// Only this account may use the portal; any other cached session is discarded
-const AUTHORIZED_EMAIL = 'archana.katkar@brickfour.com';
-
+// The server decides which accounts may sign in; a cached user without a token is discarded
 function restoreSession(): User | null {
   const cached = readSessionUser();
-  if (cached?.email?.toLowerCase() === AUTHORIZED_EMAIL && readSessionToken()) return cached;
+  if (cached?.email && readSessionToken()) return cached;
   if (cached) clearSession();
   return null;
 }

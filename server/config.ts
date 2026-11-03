@@ -69,19 +69,43 @@ export const config = {
     ttlHours: parseInt(env('SESSION_TTL_HOURS') || '12', 10)
   },
 
-  // The single authorised portal account (self-registration is disabled)
-  adminAccount: {
-    id: 'archana-katkar',
-    email: 'archana.katkar@brickfour.com',
-    // Only used to seed a brand-new database; the stored (hashed) password is authoritative
-    initialPassword: env('ADMIN_INITIAL_PASSWORD') || 'Archana@123',
-    name: 'Archana Katkar',
-    role: 'attorney' as const,
-    phone: '8975332899',
-    profession: 'Legal Executive',
-    address: 'brickfour, Yerwada',
-    firmName: 'Brickfour'
-  },
+  // The authorised portal accounts (self-registration is disabled). initialPassword only
+  // seeds an account that doesn't exist yet; the stored (hashed) password is authoritative.
+  portalAccounts: [
+    {
+      id: 'archana-katkar',
+      email: 'archana.katkar@brickfour.com',
+      initialPassword: env('ADMIN_INITIAL_PASSWORD') || 'Archana@123',
+      name: 'Archana Katkar',
+      role: 'attorney' as const,
+      phone: '8975332899',
+      profession: 'Legal Executive',
+      address: 'brickfour, Yerwada',
+      firmName: 'Brickfour'
+    },
+    {
+      id: 'dwarka',
+      email: 'dwarka@brickfour.com',
+      initialPassword: 'Dwarka@123',
+      name: 'Dwarka',
+      role: 'attorney' as const,
+      phone: '',
+      profession: 'Legal Executive',
+      address: 'brickfour, Yerwada',
+      firmName: 'Brickfour'
+    },
+    {
+      id: 'vikas-khatik',
+      email: 'vikas.khatik@brickfour.com',
+      initialPassword: 'Vikas@123',
+      name: 'Vikas Khatik',
+      role: 'attorney' as const,
+      phone: '',
+      profession: 'Legal Executive',
+      address: 'brickfour, Yerwada',
+      firmName: 'Brickfour'
+    }
+  ],
 
   geminiApiKey: env('GEMINI_API_KEY'),
 

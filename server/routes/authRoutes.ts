@@ -11,7 +11,7 @@ export const publicAuthRoutes = createRouter();
 /** Routes for the signed-in user (mounted behind requireAuth). */
 export const accountRoutes = createRouter();
 
-const admin = config.adminAccount;
+const portalEmails = new Set(config.portalAccounts.map(account => account.email));
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -36,14 +36,15 @@ function issueSession(user: User) {
   return createSessionToken(user.id, db.getPasswordForUser(user.id));
 }
 
-// Auth API: Login (restricted to the single authorised account)
+// Auth API: Login (restricted to the authorised portal accounts)
 publicAuthRoutes.post('/auth/login', loginLimiter, (req, res) => {
   const { email, password } = req.body || {};
   if (typeof email !== 'string' || typeof password !== 'string' || !email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
-  const user = email.trim().toLowerCase() === admin.email ? db.getUserByEmail(admin.email) : undefined;
+  const normalizedEmail = email.trim().toLowerCase();
+  const user = portalEmails.has(normalizedEmail) ? db.getUserByEmail(normalizedEmail) : undefined;
   if (!user || !verifyPassword(password, db.getPasswordForUser(user.id))) {
     return res.status(401).json({ error: "Invalid username or password." });
   }

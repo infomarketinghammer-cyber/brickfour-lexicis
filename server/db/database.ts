@@ -48,6 +48,7 @@ class CaseDatabase {
   private remoteSyncRunning = false;
   private remoteSyncQueued = false;
   private passwordsMigrated = false;
+  private portalAccountsAdded = false;
 
   /** Settles once stored state has been loaded (local file, then MongoDB / Supabase). */
   public readonly ready: Promise<void>;
@@ -211,14 +212,16 @@ class CaseDatabase {
     await this.loadFromSupabase(5000);
 
     // Replace plaintext passwords in the remote copies too
-    if (this.passwordsMigrated) {
+    if (this.passwordsMigrated) console.log("[db] Migrated stored passwords to scrypt hashes.");
+    if (this.portalAccountsAdded) console.log("[db] Added new portal accounts.");
+    if (this.passwordsMigrated || this.portalAccountsAdded) {
       this.passwordsMigrated = false;
-      console.log("[db] Migrated stored passwords to scrypt hashes.");
+      this.portalAccountsAdded = false;
       this.save();
     }
   }
 
-  /** Makes sure the verified real cases, the admin account and seeded hearings are present. */
+  /** Makes sure the verified real cases, the portal accounts and seeded hearings are present. */
   private ensureRealCasesAndTracked() {
     if (!this.data.users) this.data.users = [];
     if (!this.data.userPasswords) this.data.userPasswords = {};
@@ -249,27 +252,33 @@ class CaseDatabase {
       }
     }
 
-    // 3. Ensure the admin account exists, without overwriting profile edits or a changed password
-    const admin = config.adminAccount;
-    let adminUser = this.data.users.find(u => u.email.toLowerCase() === admin.email);
-    if (!adminUser) {
-      adminUser = {
-        id: admin.id,
-        email: admin.email,
-        name: admin.name,
-        role: admin.role,
-        phone: admin.phone,
-        profession: admin.profession,
-        address: admin.address,
-        firmName: admin.firmName
-      };
-      this.data.users.push(adminUser);
-    } else {
-      adminUser.phone = adminUser.phone || admin.phone;
-      adminUser.address = adminUser.address || admin.address;
-    }
-    if (!this.data.userPasswords[adminUser.id]) {
-      this.data.userPasswords[adminUser.id] = hashPassword(admin.initialPassword);
+    // 3. Ensure the portal accounts exist, without overwriting profile edits or a changed password
+    for (const account of config.portalAccounts) {
+      let accountUser = this.data.users.find(u => u.email.toLowerCase() === account.email);
+      if (!accountUser) {
+        accountUser = {
+          id: account.id,
+          email: account.email,
+          name: account.name,
+          role: account.role,
+          phone: account.phone,
+          profession: account.profession,
+          address: account.address,
+          firmName: account.firmName
+        };
+        this.data.users.push(accountUser);
+        this.portalAccountsAdded = true;
+      } else {
+        accountUser.phone = accountUser.phone || account.phone;
+        accountUser.address = accountUser.address || account.address;
+      }
+      if (!this.data.userPasswords[accountUser.id]) {
+        this.data.userPasswords[accountUser.id] = hashPassword(account.initialPassword);
+        this.portalAccountsAdded = true;
+      }
+      if (!this.data.trackedCaseIds[accountUser.id]) {
+        this.data.trackedCaseIds[accountUser.id] = [];
+      }
     }
 
     // Older databases stored plaintext passwords; replace them with hashes
@@ -279,10 +288,6 @@ class CaseDatabase {
         this.passwordsMigrated = true;
       }
     }
-    if (!this.data.trackedCaseIds[adminUser.id]) {
-      this.data.trackedCaseIds[adminUser.id] = [];
-    }
-
     // 4. Ensure authentic scheduled hearings exist
     if (!this.data.hearings || this.data.hearings.length === 0) {
       this.data.hearings = DEFAULT_HEARINGS.map(h => ({ ...h }));
