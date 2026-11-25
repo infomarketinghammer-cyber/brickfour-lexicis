@@ -147,7 +147,7 @@ export default function StrategyReport({ strategy, input, savedCaseSuccess, onSa
           <button
             type="button"
             onClick={() => window.print()}
-            className="px-4 py-2 rounded-xl bg-slate-900 text-amber-400 hover:bg-slate-800 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-brand-600 text-white hover:bg-brand-700 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>Export / Print</span>
@@ -173,7 +173,7 @@ export default function StrategyReport({ strategy, input, savedCaseSuccess, onSa
                 e.preventDefault();
                 document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-white text-slate-600 hover:bg-slate-900 hover:text-amber-400 border border-slate-200 transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-white text-slate-600 hover:bg-brand-600 hover:text-white border border-slate-200 transition-colors cursor-pointer"
             >
               {item.label}
             </a>
@@ -256,7 +256,7 @@ export default function StrategyReport({ strategy, input, savedCaseSuccess, onSa
                           done ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-slate-200 hover:border-slate-350'
                         }`}
                       >
-                        <input type="checkbox" checked={done} onChange={() => {}} className="mt-0.5 h-4 w-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300 cursor-pointer" />
+                        <input type="checkbox" checked={done} onChange={() => {}} className="mt-0.5 h-4 w-4 rounded text-amber-600 focus:ring-brand-500 border-slate-300 cursor-pointer" />
                         <span className={`text-sm ${done ? 'line-through text-slate-400' : 'text-slate-800'}`}>{act}</span>
                       </div>
                     );
@@ -299,7 +299,7 @@ export default function StrategyReport({ strategy, input, savedCaseSuccess, onSa
             <div className="space-y-3">
               {strategy.mitigationAndLegalSteps.map((step) => (
                 <div key={step.stepNumber} className="border border-slate-200 rounded-xl p-4 flex gap-4 items-start">
-                  <div className="w-7 h-7 rounded-full bg-slate-900 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0 status-dot">
+                  <div className="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-xs shrink-0 status-dot">
                     {step.stepNumber}
                   </div>
                   <div className="space-y-1.5 flex-1">
@@ -354,7 +354,7 @@ export default function StrategyReport({ strategy, input, savedCaseSuccess, onSa
               <button
                 type="button"
                 onClick={copyTemplateToClipboard}
-                className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-400 text-xs font-semibold flex items-center gap-1.5 shrink-0 cursor-pointer print:hidden"
+                className="px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold flex items-center gap-1.5 shrink-0 cursor-pointer print:hidden"
               >
                 {copiedTemplate ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedTemplate ? 'Copied' : 'Copy Draft Deed'}</span>
@@ -534,7 +534,7 @@ export default function StrategyReport({ strategy, input, savedCaseSuccess, onSa
               e.preventDefault();
               document.getElementById('strategy-advisor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-400 text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors cursor-pointer print:hidden"
+            className="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors cursor-pointer print:hidden"
           >
             <MessageSquare className="h-4 w-4" />
             <span>Ask a Follow-Up Question</span>

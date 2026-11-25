@@ -52,7 +52,7 @@ const YES_NO: FilterOption[] = [
   { value: 'false', label: 'No' }
 ];
 
-const fieldClass = 'w-full px-2.5 py-2 border border-slate-300 rounded-lg text-xs text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:bg-slate-100 disabled:text-slate-400';
+const fieldClass = 'w-full px-2.5 py-2 border border-slate-300 rounded-lg text-xs text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:bg-slate-100 disabled:text-slate-400';
 const labelClass = 'block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1';
 
 function SelectField({ label, value, options, onChange, anyLabel = 'Any', disabled }: {

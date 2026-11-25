@@ -24,10 +24,10 @@ interface DashboardHeaderProps {
 }
 
 const NAV_TABS: { id: AppTab; label: string; icon: LucideIcon; iconClassName: string }[] = [
-  { id: 'search', label: 'Search Registry', icon: Search, iconClassName: 'h-4 w-4 flex-shrink-0 text-sky-600' },
-  { id: 'dashboard', label: 'Workspace', icon: LayoutDashboard, iconClassName: 'h-4 w-4 flex-shrink-0 text-slate-700' },
-  { id: 'insights', label: 'Active Case & AI Coach', icon: Sparkles, iconClassName: 'h-4 w-4 flex-shrink-0 text-amber-600 fill-current' },
-  { id: 'strategy', label: 'Legal Strategy & Predictor', icon: ShieldAlert, iconClassName: 'h-4 w-4 flex-shrink-0 text-indigo-600' }
+  { id: 'search', label: 'Search Registry', icon: Search, iconClassName: 'h-4 w-4 flex-shrink-0 text-sky-200' },
+  { id: 'dashboard', label: 'Workspace', icon: LayoutDashboard, iconClassName: 'h-4 w-4 flex-shrink-0 text-brand-100' },
+  { id: 'insights', label: 'Active Case & AI Coach', icon: Sparkles, iconClassName: 'h-4 w-4 flex-shrink-0 text-amber-300 fill-current' },
+  { id: 'strategy', label: 'Legal Strategy & Predictor', icon: ShieldAlert, iconClassName: 'h-4 w-4 flex-shrink-0 text-brand-200' }
 ];
 
 function getInitials(name: string): string {
@@ -49,14 +49,16 @@ export default function DashboardHeader({
   const [showProfileModal, setShowProfileModal] = useState(false);
 
   return (
-    <header className="bg-white border-b border-slate-200 text-slate-900 sticky top-0 z-50 shadow-xs">
+    <header className="bg-brand-600 border-b border-brand-800 text-white sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-3">
 
-          {/* Logo & Branding */}
+          {/* Logo & Branding (the red-on-white logo sits on a white tile) */}
           <div className="flex items-center space-x-2.5 flex-shrink-0">
-            <img src={appLogo} alt="LEXICIS" className="h-6 w-auto object-contain" />
-            <span className="font-display font-bold text-lg sm:text-xl tracking-wider text-slate-900">LEXICIS</span>
+            <span className="bg-white rounded-md px-1.5 py-1 shadow-xs flex items-center">
+              <img src={appLogo} alt="LEXICIS" className="h-5 w-auto object-contain" />
+            </span>
+            <span className="font-display font-bold text-lg sm:text-xl tracking-wider text-white">LEXICIS</span>
           </div>
 
           {/* Navigation Tabs in Header */}
@@ -65,10 +67,10 @@ export default function DashboardHeader({
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex items-center space-x-1.5 py-1.5 px-2.5 sm:px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all cursor-pointer whitespace-nowrap flex-shrink-0 text-slate-800 ${
+                className={`flex items-center space-x-1.5 py-1.5 px-2.5 sm:px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
                   activeTab === id
-                    ? 'bg-slate-100 font-bold border-b-2 border-amber-600 shadow-xs'
-                    : 'hover:bg-slate-100 border-b-2 border-transparent'
+                    ? 'bg-white/15 text-white font-bold border-b-2 border-amber-400 shadow-xs'
+                    : 'text-brand-100 hover:bg-white/10 hover:text-white border-b-2 border-transparent'
                 }`}
                 title={id === 'insights'
                   ? (!selectedCase ? "View AI coach & case insights" : "View complete timeline and AI recovery suggestions")
@@ -76,7 +78,7 @@ export default function DashboardHeader({
                 id={`tab-btn-${id}`}
               >
                 <Icon className={iconClassName} />
-                <span className="text-slate-800">{label}</span>
+                <span>{label}</span>
               </button>
             ))}
           </nav>
@@ -85,10 +87,10 @@ export default function DashboardHeader({
           <div className="flex items-center space-x-3 flex-shrink-0">
 
             {/* User credentials & profile button */}
-            <div className="flex items-center space-x-3 pl-2 border-l border-slate-200">
+            <div className="flex items-center space-x-3 pl-2 border-l border-white/20">
               <button
                 onClick={() => setShowProfileModal(true)}
-                className="flex items-center space-x-2.5 text-left group cursor-pointer p-1.5 rounded-lg hover:bg-slate-100 transition-all"
+                className="flex items-center space-x-2.5 text-left group cursor-pointer p-1.5 rounded-lg hover:bg-white/10 transition-all"
                 title="View & Edit Profile"
                 id="btn-user-profile"
               >
@@ -96,10 +98,10 @@ export default function DashboardHeader({
                   {getInitials(user.name)}
                 </div>
                 <div className="hidden sm:block">
-                  <div className="text-xs font-bold text-slate-900 group-hover:text-amber-700 transition-colors">
+                  <div className="text-xs font-bold text-white group-hover:text-amber-200 transition-colors">
                     {user.name}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-medium">
+                  <div className="text-[10px] text-brand-200 font-medium">
                     {user.profession || 'Legal Executive'}
                   </div>
                 </div>
@@ -107,7 +109,7 @@ export default function DashboardHeader({
 
               <button
                 onClick={onLogout}
-                className="p-1.5 rounded-md hover:bg-slate-100 text-slate-500 hover:text-rose-600 transition-all cursor-pointer"
+                className="p-1.5 rounded-md hover:bg-white/10 text-brand-100 hover:text-rose-200 transition-all cursor-pointer"
                 title="Logout of session"
                 id="btn-logout"
               >

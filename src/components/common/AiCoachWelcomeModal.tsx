@@ -12,7 +12,7 @@ export default function AiCoachWelcomeModal({ onDismiss, onConsultCoach }: AiCoa
       <div className="bg-white rounded-2xl border border-slate-100 shadow-2xl max-w-md w-full overflow-hidden animate-fade-in relative flex flex-col max-h-[92vh] overflow-y-auto scrollbar-none" id="ai-coach-welcome-modal">
 
         {/* Header / Graphic */}
-        <div className="bg-slate-900 text-white p-6 relative overflow-hidden">
+        <div className="bg-brand-700 text-white p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 -mr-6 -mt-6 p-12 bg-indigo-600 rounded-full opacity-20"></div>
 
           <button

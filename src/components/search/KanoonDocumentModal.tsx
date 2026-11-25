@@ -80,7 +80,7 @@ export default function KanoonDocumentModal({ document, onClose }: KanoonDocumen
           <button
             type="button"
             onClick={onClose}
-            className="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-4 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-4 py-1.5 rounded-lg transition-colors cursor-pointer"
           >
             Close
           </button>

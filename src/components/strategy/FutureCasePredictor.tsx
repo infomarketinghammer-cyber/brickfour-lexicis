@@ -35,7 +35,7 @@ const PROGRESS_STEPS = [
   'Drafting your action plan'
 ];
 
-const inputClass = 'w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500';
+const inputClass = 'w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500';
 const labelClass = 'block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1';
 
 const randomSuffix = () => Math.random().toString(36).substr(2, 9);
@@ -324,7 +324,7 @@ export default function FutureCasePredictor({ onSaveAsCase }: FutureCasePredicto
             <button
               type="submit"
               disabled={isLoading || !incidentDetails.trim()}
-              className="w-full sm:w-auto bg-slate-900 text-amber-400 hover:bg-slate-800 border border-slate-800 px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto bg-brand-600 text-white hover:bg-brand-700 border border-brand-700 px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
               id="btn-generate-strategy"
             >
               {isLoading ? (

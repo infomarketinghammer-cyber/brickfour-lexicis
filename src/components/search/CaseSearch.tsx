@@ -26,7 +26,7 @@ interface CaseSearchProps {
 const SOURCE_PILLS: { id: SourceFilter; activeClassName: string; content: React.ReactNode }[] = [
   {
     id: 'all',
-    activeClassName: 'bg-slate-900 text-amber-400 shadow-xs',
+    activeClassName: 'bg-brand-600 text-white shadow-xs',
     content: (
       <>
         <span>All Registries</span>
@@ -258,7 +258,7 @@ export default function CaseSearch({ trackedCaseIds, onTrackCase, onTrackCasesBu
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search by Name, CNR Number, Party Name, Advocate Name, Company Name..."
-              className="w-full pl-9 pr-8 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-900 bg-white"
+              className="w-full pl-9 pr-8 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 bg-white"
               id="input-case-search"
               autoComplete="off"
             />
@@ -292,7 +292,7 @@ export default function CaseSearch({ trackedCaseIds, onTrackCase, onTrackCasesBu
           <button
             type="submit"
             disabled={loading}
-            className="bg-slate-900 text-amber-400 hover:bg-slate-800 border border-slate-800 hover:border-amber-400/20 px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs"
+            className="bg-brand-600 text-white hover:bg-brand-700 border border-brand-700 hover:border-brand-500 px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs"
             id="btn-search-cases"
           >
             {loading ? (
@@ -352,7 +352,7 @@ export default function CaseSearch({ trackedCaseIds, onTrackCase, onTrackCasesBu
 
       {/* Bulk Track Notification Banner */}
       {bulkSelectedIds.length > 0 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-3.5 mb-6 text-white flex items-center justify-between animate-fade-in shadow-md">
+        <div className="bg-brand-700 border border-brand-600 rounded-xl p-3.5 mb-6 text-white flex items-center justify-between animate-fade-in shadow-md">
           <div className="flex items-center space-x-3">
             <div className="bg-amber-500 text-slate-950 px-2.5 py-1 rounded-lg font-extrabold text-sm flex items-center justify-center">
               {bulkSelectedIds.length}
@@ -395,7 +395,7 @@ export default function CaseSearch({ trackedCaseIds, onTrackCase, onTrackCasesBu
 
         {/* Left Side: Result List */}
         <div>
-          <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+          <div className="flex items-center justify-between min-h-[34px] mb-3 pb-2 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Official Registry Matches
@@ -434,9 +434,9 @@ export default function CaseSearch({ trackedCaseIds, onTrackCase, onTrackCasesBu
 
           {error && <p className="text-xs text-rose-600 mb-2">{error}</p>}
 
-          <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
+          <div className={`space-y-2.5 max-h-[420px] overflow-y-auto ${results.length ? 'pr-1' : ''}`}>
             {results.length === 0 ? (
-              <div className="p-6 text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50 space-y-3">
+              <div className="p-5 min-h-[280px] flex flex-col justify-center text-center border border-slate-200 rounded-2xl bg-slate-50 space-y-3">
                 {/* A failed search is not evidence that no case exists */}
                 {hasSearched && !error ? (
                   <div className="bg-rose-50/80 border border-rose-200 rounded-xl p-5 text-center space-y-2">
@@ -451,8 +451,8 @@ export default function CaseSearch({ trackedCaseIds, onTrackCase, onTrackCasesBu
                     </p>
                   </div>
                 ) : (
-                  <div className="py-8 space-y-2">
-                    <Search className="h-8 w-8 text-slate-300 mx-auto stroke-[1.5]" />
+                  <div className="space-y-3">
+                    <Search className="h-10 w-10 text-slate-300 mx-auto stroke-[1.5]" />
                     <p className="text-slate-700 font-semibold text-xs">Ready for Lexicis Search Registry Query</p>
                   </div>
                 )}
@@ -500,15 +500,22 @@ export default function CaseSearch({ trackedCaseIds, onTrackCase, onTrackCasesBu
           )}
         </div>
 
-        {/* Right Side: Preview & Detailed metadata */}
-        <CasePreviewPanel
-          selectedCase={selectedCase}
-          isTracked={!!selectedCase && trackedCaseIds.includes(selectedCase.id)}
-          isAdding={!!selectedCase && addingId === selectedCase.id}
-          onTrack={trackCase}
-          onUntrack={onUntrackCase}
-          onOpenKanoonDoc={handleOpenKanoonDoc}
-        />
+        {/* Right Side: Preview & Detailed metadata (heading mirrors the left column so both panels line up) */}
+        <div>
+          <div className="flex items-center min-h-[34px] mb-3 pb-2 border-b border-slate-100">
+            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              Case Preview
+            </h3>
+          </div>
+          <CasePreviewPanel
+            selectedCase={selectedCase}
+            isTracked={!!selectedCase && trackedCaseIds.includes(selectedCase.id)}
+            isAdding={!!selectedCase && addingId === selectedCase.id}
+            onTrack={trackCase}
+            onUntrack={onUntrackCase}
+            onOpenKanoonDoc={handleOpenKanoonDoc}
+          />
+        </div>
 
       </div>
 

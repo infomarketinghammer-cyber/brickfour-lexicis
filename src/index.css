@@ -6,6 +6,39 @@
   --font-display: "Space Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
+  /* Brand: Brickfour royal blue (#23408E = brand-600, the header colour) */
+  --color-brand-50: #eff3fb;
+  --color-brand-100: #dde5f7;
+  --color-brand-200: #bccbee;
+  --color-brand-300: #8ea5de;
+  --color-brand-400: #5b7bcb;
+  --color-brand-500: #2f52ad;
+  --color-brand-600: #23408e;
+  --color-brand-700: #1d3575;
+  --color-brand-800: #192c5e;
+  --color-brand-900: #14234a;
+  --color-brand-950: #0d1730;
+
+  /* Existing indigo accents follow the brand blue */
+  --color-indigo-50: #eff3fb;
+  --color-indigo-100: #dde5f7;
+  --color-indigo-200: #bccbee;
+  --color-indigo-300: #8ea5de;
+  --color-indigo-400: #5b7bcb;
+  --color-indigo-500: #2f52ad;
+  --color-indigo-600: #23408e;
+  --color-indigo-700: #1d3575;
+  --color-indigo-800: #192c5e;
+  --color-indigo-900: #14234a;
+  --color-indigo-950: #0d1730;
+
+  /* In-between shades used by components (missing ones fall back to a black border) */
+  --color-slate-150: #e9eef4;
+  --color-slate-350: #b0bccc;
+  --color-slate-750: #283548;
+  --color-slate-850: #172033;
+  --color-indigo-150: #ccd8f2;
+
   --radius-xs: 5px;
   --radius-sm: 5px;
   --radius: 5px;
@@ -16,6 +49,13 @@
   --radius-3xl: 5px;
   --radius-4xl: 5px;
   --radius-full: 5px;
+}
+
+/* Page canvas matches the app background, and scrolling past the edges doesn't reveal a white band */
+html,
+body {
+  background-color: var(--color-slate-50);
+  overscroll-behavior-y: none;
 }
 
 /* Ensure all boxes, cards, inputs, buttons, badges, modals, panels, and containers are rectangular with radius 5px */

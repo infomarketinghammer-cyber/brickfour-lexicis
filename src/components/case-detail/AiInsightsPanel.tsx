@@ -1,6 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Sparkles, Loader2, RefreshCw, CheckCircle2, Scale, BookOpen, ArrowUpRight } from 'lucide-react';
+import { Sparkles, Loader2, RefreshCw, CheckCircle2, Scale, BookOpen, ArrowUpRight, Gavel, FileText, Lightbulb, Landmark, Calendar } from 'lucide-react';
 import { Case, CaseAiInsight, isCaseDisposed } from '../../types';
+
+const SECTION_HEADING = 'text-xs font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2';
+
+/** Badge for a precedent's outcome ("Other" just means a decided matter outside the usual labels). */
+function outcomeStyle(status?: string): { label: string; className: string } {
+  const s = (status || '').trim().toLowerCase();
+  if (s.startsWith('partly')) return { label: 'Partly Allowed', className: 'bg-amber-50 text-amber-800 border-amber-200' };
+  if (s.startsWith('allowed')) return { label: 'Allowed', className: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+  if (s.startsWith('dismissed')) return { label: 'Dismissed', className: 'bg-rose-50 text-rose-700 border-rose-200' };
+  if (s.startsWith('remanded')) return { label: 'Remanded', className: 'bg-sky-50 text-sky-800 border-sky-200' };
+  if (s === 'disposed') return { label: 'Disposed', className: 'bg-slate-100 text-slate-700 border-slate-200' };
+  return { label: 'Decided', className: 'bg-slate-100 text-slate-700 border-slate-200' };
+}
+
+/** Label and colours for a precedent's relevance score. */
+function matchStyle(similarity: number): { label: string; text: string; bar: string } {
+  if (similarity >= 75) return { label: 'Strong match', text: 'text-emerald-700', bar: 'bg-emerald-500' };
+  if (similarity >= 55) return { label: 'Good match', text: 'text-brand-600', bar: 'bg-brand-500' };
+  return { label: 'Partial match', text: 'text-amber-700', bar: 'bg-amber-500' };
+}
 
 interface AiInsightsPanelProps {
   caseItem: Case;
@@ -86,56 +106,55 @@ export default function AiInsightsPanel({ caseItem, insights, loadingInsights, o
             </p>
           </div>
 
-          {/* Sub layout: Merit Analysis & Similar cases count */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-              <h5 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Legal Merit Assessment
+          {/* Legal merit assessment: one justified block (hyphenation keeps the word spacing even) */}
+          {insights.legalMeritAnalysis && (
+            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+              <h5 className={`${SECTION_HEADING} mb-3`}>
+                <span className="h-7 w-7 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center shrink-0">
+                  <Gavel className="h-3.5 w-3.5 text-brand-600" />
+                </span>
+                <span>Legal Merit Assessment</span>
               </h5>
-              <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+              <p className="text-sm text-slate-700 leading-7 whitespace-pre-line text-justify hyphens-auto">
                 {insights.legalMeritAnalysis}
               </p>
             </div>
-
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-              <h5 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                Precedent Volumetrics
-              </h5>
-              <div className="flex items-baseline space-x-1 mt-1">
-                <span className="text-3xl font-bold text-amber-600 font-display">{insights.similarCasesCount}</span>
-                <span className="text-xs text-slate-500">similar cases mapped in our network</span>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-2 leading-relaxed">
-                Judgments on the same legal issues found on Indian Kanoon, each checked against its own text for relevance and outcome.
-              </p>
-            </div>
-          </div>
+          )}
 
           {/* Similar Cases & Outcomes */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-            <div className="border-b border-slate-100 pb-3">
-              <h4 className="text-sm font-bold text-slate-900 flex items-center space-x-2">
-                <Scale className="h-5 w-5 text-amber-500" />
-                <span>Comparative Precedents & Outcome Analysis</span>
-              </h4>
-              <p className="text-xs text-slate-500 mt-1">
-                Judgments that decided the same legal questions as this case, with what each court actually ordered.
-              </p>
-              {precedentCount > 1 && (
-              <div className="flex items-center space-x-3 mt-3">
-                <span className="text-xs text-slate-500 font-semibold">Cases to show: {visibleCases}</span>
-                <input
-                  type="range"
-                  min="1"
-                  max={precedentCount}
-                  value={visibleCases}
-                  onChange={(e) => {
-                    const parsed = parseInt(e.target.value, 10);
-                    setMaxCases(isNaN(parsed) ? 5 : parsed);
-                  }}
-                  className="w-32 accent-amber-600"
-                />
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-100 pb-4">
+              <div>
+                <h4 className="text-base font-display font-bold text-slate-950 flex items-center gap-2">
+                  <span className="h-8 w-8 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center shrink-0">
+                    <Scale className="h-4 w-4 text-brand-600" />
+                  </span>
+                  <span>Comparative Precedents & Outcome Analysis</span>
+                  {precedentCount > 0 && (
+                    <span className="text-[11px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 px-2 py-0.5 rounded-full">
+                      {precedentCount} judgment{precedentCount === 1 ? '' : 's'}
+                    </span>
+                  )}
+                </h4>
+                <p className="text-xs text-slate-500 mt-1.5 sm:ml-10">
+                  Judgments that decided the same legal questions as this case, with what each court actually ordered.
+                </p>
               </div>
+              {precedentCount > 1 && (
+                <label className="flex items-center gap-3 text-xs text-slate-600 font-semibold bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 shrink-0">
+                  <span className="whitespace-nowrap">Showing {visibleCases} of {precedentCount}</span>
+                  <input
+                    type="range"
+                    min="1"
+                    max={precedentCount}
+                    value={visibleCases}
+                    onChange={(e) => {
+                      const parsed = parseInt(e.target.value, 10);
+                      setMaxCases(isNaN(parsed) ? 5 : parsed);
+                    }}
+                    className="w-28 accent-brand-600"
+                  />
+                </label>
               )}
             </div>
 
@@ -147,106 +166,121 @@ export default function AiInsightsPanel({ caseItem, insights, loadingInsights, o
             ) : (
               <div className="space-y-4">
                 {(insights.similarCases || []).slice(0, visibleCases).map((sc, i) => {
-                  const kanoonUrl = sc.docUrl || (sc.kanoonDocId 
-                    ? `https://indiankanoon.org/doc/${sc.kanoonDocId}/` 
+                  const kanoonUrl = sc.docUrl || (sc.kanoonDocId
+                    ? `https://indiankanoon.org/doc/${sc.kanoonDocId}/`
                     : `https://indiankanoon.org/search/?formInput=${encodeURIComponent(sc.citation || sc.title)}`);
+                  const outcome = outcomeStyle(sc.status);
+                  const match = typeof sc.similarity === 'number' ? matchStyle(sc.similarity) : null;
+                  // Search snippets can start mid-sentence
+                  const facts = sc.description && /^[a-z]/.test(sc.description) ? `…${sc.description}` : sc.description;
 
                   return (
-                    <div key={i} className="bg-slate-50/50 border border-slate-200 rounded-2xl p-5 hover:bg-white hover:border-slate-300 transition-all space-y-4 shadow-xs">
-                      
-                      {/* Header Block: Title, Match Strength, Citation, Direct Indian Kanoon Action */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                        <div className="space-y-1">
-                          <div className="flex items-center space-x-2 flex-wrap gap-1.5">
+                    <article key={i} className="border border-slate-200 rounded-2xl bg-white hover:border-brand-200 hover:shadow-sm transition-all overflow-hidden">
+
+                      {/* Header: number, title, meta, match strength and source link */}
+                      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 p-5 bg-slate-50/70 border-b border-slate-100">
+                        <div className="flex gap-3 min-w-0">
+                          <span className="h-7 w-7 status-dot bg-brand-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                            {i + 1}
+                          </span>
+                          <div className="min-w-0 space-y-2">
                             <a
                               href={kanoonUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-sm font-bold text-indigo-950 hover:text-indigo-600 hover:underline font-sans inline-flex items-center gap-1 group cursor-pointer"
+                              className="text-[15px] font-semibold text-slate-950 hover:text-brand-600 leading-snug inline-flex items-start gap-1 group cursor-pointer"
                               title="Click to view full judgment on Indian Kanoon"
                             >
-                              <span>{sc.title}</span>
-                              <ArrowUpRight className="h-4 w-4 text-indigo-500 opacity-70 group-hover:opacity-100 transition-opacity shrink-0" />
+                              <span className="group-hover:underline">{sc.title}</span>
+                              <ArrowUpRight className="h-4 w-4 mt-0.5 text-brand-400 group-hover:text-brand-600 transition-colors shrink-0" />
                             </a>
-                            {sc.citation && (
-                              <a
-                                href={kanoonUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[10px] font-mono font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md hover:bg-indigo-100 transition-colors inline-flex items-center gap-1"
-                                title="Open citation on Indian Kanoon"
-                              >
-                                <span>Citation: {sc.citation}</span>
-                              </a>
-                            )}
-                          </div>
-                          <div className="flex items-center flex-wrap gap-x-2 gap-y-0.5 text-[11px] text-slate-500">
-                            <span>Status: <strong className="text-emerald-700 uppercase font-mono">{sc.status || 'Decided'}</strong></span>
-                            {typeof sc.similarity === 'number' && (
-                              <>
-                                <span>•</span>
-                                <span>Match Strength: <strong className="text-amber-800">{sc.similarity}%</strong></span>
-                              </>
-                            )}
-                            {sc.court && (
-                              <>
-                                <span>•</span>
-                                <span>{sc.court}{sc.decisionDate ? `, ${sc.decisionDate}` : ''}</span>
-                              </>
-                            )}
-                            <span>•</span>
-                            <span className="text-indigo-600 font-medium">Source: Indian Kanoon</span>
+                            <div className="flex items-center flex-wrap gap-1.5 text-[11px]">
+                              <span className={`font-semibold px-2 py-0.5 rounded-full border ${outcome.className}`}>
+                                {outcome.label}
+                              </span>
+                              {sc.court && (
+                                <span className="inline-flex items-center gap-1 text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                                  <Landmark className="h-3 w-3 text-slate-400" />
+                                  {sc.court}
+                                </span>
+                              )}
+                              {sc.decisionDate && (
+                                <span className="inline-flex items-center gap-1 text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                                  <Calendar className="h-3 w-3 text-slate-400" />
+                                  {sc.decisionDate}
+                                </span>
+                              )}
+                              {sc.citation && (
+                                <span className="font-mono text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                                  {sc.citation}
+                                </span>
+                              )}
+                              <span className="text-slate-400">Source: Indian Kanoon</span>
+                            </div>
                           </div>
                         </div>
-                        
-                        <a
-                          href={kanoonUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="self-start sm:self-center text-[11px] font-bold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs inline-flex items-center gap-1.5 font-sans cursor-pointer transition-all hover:scale-102 shrink-0"
-                          title="Open full judgment transcript on Indian Kanoon"
-                        >
-                          <BookOpen className="h-3.5 w-3.5" />
-                          <span>View on Indian Kanoon</span>
-                          <ArrowUpRight className="h-3 w-3" />
-                        </a>
+
+                        <div className="flex flex-wrap lg:flex-col items-center lg:items-end gap-3 shrink-0 pl-10 lg:pl-4">
+                          {match && (
+                            <div className="w-full sm:w-36" title="How closely this judgment's issues match your case">
+                              <div className="flex justify-between items-baseline text-[11px]">
+                                <span className={`font-semibold ${match.text}`}>{match.label}</span>
+                                <span className="font-bold text-slate-900">{sc.similarity}%</span>
+                              </div>
+                              <div className="h-1.5 bg-slate-200 rounded-full mt-1 overflow-hidden">
+                                <div className={`h-full ${match.bar}`} style={{ width: `${Math.max(0, Math.min(100, sc.similarity!))}%` }} />
+                              </div>
+                            </div>
+                          )}
+                          <a
+                            href={kanoonUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-200 bg-white text-brand-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 inline-flex items-center gap-1.5 cursor-pointer transition-colors whitespace-nowrap"
+                            title="Open full judgment transcript on Indian Kanoon"
+                          >
+                            <BookOpen className="h-3.5 w-3.5" />
+                            <span>View on Indian Kanoon</span>
+                          </a>
+                        </div>
                       </div>
 
-                      {/* Descriptive Case Summary */}
-                      {sc.description && (
-                        <div className="text-xs sm:text-sm text-slate-700 leading-relaxed bg-white/60 p-3.5 rounded-xl border border-slate-100">
-                          <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">
-                            Case Facts & Judicial Dispute Context
+                      <div className="p-5 space-y-4">
+                        {/* Verdict leads: what the court actually ordered */}
+                        <section className="border-l-4 border-amber-400 bg-amber-50/60 rounded-r-xl px-4 py-3">
+                          <h5 className={SECTION_HEADING}>
+                            <Gavel className="h-4 w-4 text-amber-600" />
+                            <span>Judicial Verdict & Result</span>
                           </h5>
-                          <p className="text-slate-700 text-xs sm:text-sm">
-                            {sc.description}
+                          <p className="text-sm text-slate-800 font-medium leading-relaxed mt-1.5">
+                            {sc.result}
                           </p>
-                        </div>
-                      )}
+                        </section>
 
-                      {/* Verdict / Detailed Outcome Block */}
-                      <div className="bg-amber-50/40 p-3.5 rounded-xl border border-amber-100 space-y-1 text-xs sm:text-sm">
-                        <h5 className="text-[10px] font-bold text-amber-800 uppercase tracking-wider font-mono">
-                          Descriptive Judicial Verdict & Result
-                        </h5>
-                        <p className="text-slate-800 font-medium leading-relaxed font-sans">
-                          {sc.result}
-                        </p>
-                      </div>
-
-                      {/* Strategic Takeaway / Ratio Decidendi */}
-                      {sc.takeaway && (
-                        <div className="bg-indigo-50/20 p-3.5 rounded-xl border border-indigo-50 text-xs sm:text-sm">
-                          <div className="font-bold text-indigo-900 flex items-center space-x-1.5 mb-1 font-mono text-[10px] uppercase tracking-wider font-sans">
-                            <BookOpen className="h-3.5 w-3.5 text-indigo-600" />
-                            <span>Ratio Decidendi & Tactical Pleading Takeaway</span>
+                        {(facts || sc.takeaway) && (
+                          <div className={`grid grid-cols-1 gap-4 ${facts && sc.takeaway ? 'lg:grid-cols-2' : ''}`}>
+                            {facts && (
+                              <section className="rounded-xl border border-slate-200 px-4 py-3">
+                                <h5 className={SECTION_HEADING}>
+                                  <FileText className="h-4 w-4 text-slate-500" />
+                                  <span>Case Facts & Dispute Context</span>
+                                </h5>
+                                <p className="text-sm text-slate-600 leading-relaxed mt-1.5">{facts}</p>
+                              </section>
+                            )}
+                            {sc.takeaway && (
+                              <section className="rounded-xl border border-brand-100 bg-brand-50/50 px-4 py-3">
+                                <h5 className={SECTION_HEADING}>
+                                  <Lightbulb className="h-4 w-4 text-brand-600" />
+                                  <span>Ratio Decidendi & Takeaway for Your Case</span>
+                                </h5>
+                                <p className="text-sm text-slate-700 leading-relaxed mt-1.5">{sc.takeaway}</p>
+                              </section>
+                            )}
                           </div>
-                          <p className="text-slate-600 leading-relaxed">
-                            {sc.takeaway}
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                        )}
+                      </div>
+                    </article>
                   );
                 })}
               </div>
@@ -349,7 +383,7 @@ export default function AiInsightsPanel({ caseItem, insights, loadingInsights, o
                       type="checkbox"
                       checked={isDone}
                       onChange={() => {}} // toggled on container click
-                      className="mt-0.5 h-4 w-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300 bg-white cursor-pointer"
+                      className="mt-0.5 h-4 w-4 rounded text-amber-600 focus:ring-brand-500 border-slate-300 bg-white cursor-pointer"
                     />
                     <div className="text-sm font-medium">
                       <span className={isDone ? 'line-through text-slate-400' : ''}>

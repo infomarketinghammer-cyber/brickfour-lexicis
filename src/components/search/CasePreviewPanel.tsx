@@ -21,12 +21,12 @@ export default function CasePreviewPanel({
   onOpenKanoonDoc
 }: CasePreviewPanelProps) {
   return (
-    <div className="border border-slate-200 rounded-2xl bg-slate-50 p-5 flex flex-col justify-between">
+    <div className="border border-slate-200 rounded-2xl bg-slate-50 p-5 min-h-[280px] flex flex-col justify-between">
       {selectedCase ? (
         <div className="space-y-4 animate-fade-in" id="case-search-preview-panel">
           <div>
             <div className="flex flex-wrap gap-1.5 items-center">
-              <span className="text-xs uppercase font-mono bg-slate-900 text-amber-400 px-2.5 py-1 rounded-md border border-slate-800 font-bold">
+              <span className="text-xs uppercase font-mono bg-brand-700 text-amber-300 px-2.5 py-1 rounded-md border border-brand-600 font-bold">
                 {selectedCase.caseNumber}
               </span>
               {selectedCase.cnrNumber && (
@@ -214,7 +214,7 @@ export default function CasePreviewPanel({
               <button
                 onClick={() => onTrack(selectedCase)}
                 disabled={isAdding}
-                className="bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800 font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer shadow-sm"
+                className="bg-brand-600 hover:bg-brand-700 text-white border border-brand-700 font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer shadow-sm"
                 id="btn-track-selected-case"
               >
                 <Plus className="h-4 w-4" />
@@ -224,10 +224,10 @@ export default function CasePreviewPanel({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center text-center py-20 text-slate-400 space-y-3">
+        <div className="flex-1 flex flex-col items-center justify-center text-center text-slate-400 space-y-3">
           <FileText className="h-10 w-10 text-slate-300 stroke-[1.5]" />
           <div>
-            <p className="text-xs font-semibold text-slate-600">No Case Selected</p>
+            <p className="text-xs font-semibold text-slate-700">No Case Selected</p>
           </div>
         </div>
       )}

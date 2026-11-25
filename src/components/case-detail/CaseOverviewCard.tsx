@@ -7,6 +7,10 @@ interface CaseOverviewCardProps {
   onUntrackCase?: (c: Case) => void;
 }
 
+// Shared typography so every highlight card reads the same
+const CARD_LABEL = 'text-[10px] uppercase tracking-wider font-mono font-bold flex items-center gap-1 min-h-[14px]';
+const CARD_VALUE = 'text-sm font-bold leading-snug mt-1.5 break-words';
+
 /** Case identifiers, status, hearing, courtroom, judge and counsel at a glance. */
 export default function CaseOverviewCard({ caseItem, onUntrackCase }: CaseOverviewCardProps) {
   return (
@@ -74,12 +78,12 @@ export default function CaseOverviewCard({ caseItem, onUntrackCase }: CaseOvervi
       {/* Highlight status & Representation details */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 pt-4 border-t border-slate-100">
         <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl">
-          <div className="text-[10px] uppercase tracking-wider font-mono text-slate-500 font-bold">Current Status</div>
-          <div className="text-sm font-bold text-amber-700 mt-1">{caseItem.currentStatus || 'DECIDED / REPORTED'}</div>
+          <div className={`${CARD_LABEL} text-slate-500`}>Current Status</div>
+          <div className={`${CARD_VALUE} text-amber-700`}>{caseItem.currentStatus || 'DECIDED / REPORTED'}</div>
         </div>
         <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl">
-          <div className="text-[10px] uppercase tracking-wider font-mono text-slate-500 font-bold">Next Hearing</div>
-          <div className="text-sm font-bold text-slate-800 mt-1">
+          <div className={`${CARD_LABEL} text-slate-500`}>Next Hearing</div>
+          <div className={`${CARD_VALUE} text-slate-800`}>
             {caseItem.nextHearingDate ? (
               <div>
                 <span className="text-rose-600 flex items-center space-x-1">
@@ -90,36 +94,36 @@ export default function CaseOverviewCard({ caseItem, onUntrackCase }: CaseOvervi
             ) : caseItem.decisionDate ? (
               <div className="text-emerald-700 flex items-center space-x-1">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                <span className="text-xs">Decided: {caseItem.decisionDate}</span>
+                <span>Decided: {caseItem.decisionDate}</span>
               </div>
-            ) : <span className="text-slate-400 font-normal italic">Decided / Disposed</span>}
+            ) : <span className="text-slate-400 italic">Decided / Disposed</span>}
           </div>
         </div>
         <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl">
-          <div className="text-[10px] uppercase tracking-wider font-mono text-slate-500 font-bold">Courtroom</div>
-          <div className="text-sm font-bold text-slate-800 mt-1">
+          <div className={`${CARD_LABEL} text-slate-500`}>Courtroom</div>
+          <div className={`${CARD_VALUE} text-slate-800`}>
             {caseItem.courtRoom || (caseItem.source === 'Indian Kanoon' ? 'REGISTRAR COURT. 1' : 'Courtroom 1')}
           </div>
         </div>
         
         {/* Highlighted Judge Box */}
         <div className="bg-amber-50/60 border border-amber-200 p-3 rounded-xl col-span-1">
-          <div className="text-[10px] uppercase tracking-wider font-mono text-amber-800 font-bold flex items-center space-x-1">
+          <div className={`${CARD_LABEL} text-amber-800`}>
             <Scale className="h-3.5 w-3.5 text-amber-600" />
             <span>Presiding Judge</span>
           </div>
-          <div className="text-xs font-bold text-slate-900 mt-1 truncate" title={caseItem.judge}>
+          <div className={`${CARD_VALUE} text-slate-800`} title={caseItem.judge}>
             {caseItem.judge || "Hon'ble Bench"}
           </div>
         </div>
 
         {/* Highlighted Advocate/Counsel Box */}
         <div className="bg-indigo-50/60 border border-indigo-200 p-3 rounded-xl col-span-1">
-          <div className="text-[10px] uppercase tracking-wider font-mono text-indigo-800 font-bold flex items-center space-x-1">
+          <div className={`${CARD_LABEL} text-indigo-800`}>
             <Briefcase className="h-3.5 w-3.5 text-indigo-600" />
             <span>Designated Counsel</span>
           </div>
-          <div className="text-xs font-bold text-slate-900 mt-1 truncate" title={caseItem.advocateName || 'Not Assigned'}>
+          <div className={`${CARD_VALUE} text-slate-800`} title={caseItem.advocateName || 'Not Assigned'}>
             {caseItem.advocateName || (caseItem.petitionerAdvocates?.[0]) || 'Advocate on Record'}
           </div>
         </div>

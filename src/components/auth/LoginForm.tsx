@@ -70,7 +70,7 @@ export default function LoginForm({ onAuthSuccess }: LoginFormProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="user@gmail.com"
-                className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 id="input-email"
               />
             </div>
@@ -89,7 +89,7 @@ export default function LoginForm({ onAuthSuccess }: LoginFormProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-9 pr-10 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                className="w-full pl-9 pr-10 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 id="input-password"
               />
               <button
@@ -112,7 +112,7 @@ export default function LoginForm({ onAuthSuccess }: LoginFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-4 flex justify-center py-2.5 px-4 border border-transparent rounded-lg text-sm font-semibold text-slate-950 bg-amber-500 hover:bg-amber-400 hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
+            className="w-full mt-4 flex justify-center py-2.5 px-4 border border-transparent rounded-lg text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
             id="btn-auth-submit"
           >
             {loading ? "Authenticating..." : "Sign In to Portal"}

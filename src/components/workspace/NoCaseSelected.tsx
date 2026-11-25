@@ -13,7 +13,7 @@ export default function NoCaseSelected({ onGoToPortfolio }: { onGoToPortfolio: (
       </p>
       <button
         onClick={onGoToPortfolio}
-        className="inline-flex items-center space-x-2 bg-slate-900 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer"
+        className="inline-flex items-center space-x-2 bg-brand-600 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-brand-700 transition-colors cursor-pointer"
       >
         <span>Go to Portfolio</span>
         <ArrowRight className="w-3.5 h-3.5" />

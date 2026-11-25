@@ -111,7 +111,7 @@ export default function CaseCoachChat({ caseItem, autoOpenChat, onChatOpenChange
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end" id="floating-coach-portal">
       {/* Floating Tooltip Callout */}
       {showCoachTooltip && !isChatOpen && (
-        <div className="bg-slate-900 text-white rounded-xl py-2 px-3 shadow-xl border border-slate-800 text-xs mb-3 mr-1 animate-bounce flex items-center space-x-2 shrink-0 max-w-[280px]">
+        <div className="bg-brand-700 text-white rounded-xl py-2 px-3 shadow-xl border border-brand-600 text-xs mb-3 mr-1 animate-bounce flex items-center space-x-2 shrink-0 max-w-[280px]">
           <div className="bg-indigo-600 p-1 rounded-lg">
             <Bot className="h-3 w-3 text-white" />
           </div>
@@ -160,7 +160,7 @@ export default function CaseCoachChat({ caseItem, autoOpenChat, onChatOpenChange
           id="ai-coach-floating-window"
         >
           {/* Header */}
-          <div className="bg-slate-900 text-white px-5 py-4 shrink-0 flex justify-between items-center max-sm:rounded-t-3xl rounded-t-2xl">
+          <div className="bg-brand-700 text-white px-5 py-4 shrink-0 flex justify-between items-center max-sm:rounded-t-3xl rounded-t-2xl">
             <div className="flex items-center space-x-3">
               <div className="relative">
                 <div className="bg-indigo-600 p-2 rounded-xl border border-indigo-500 shadow-sm">
